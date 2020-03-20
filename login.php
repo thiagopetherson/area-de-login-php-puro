@@ -1,12 +1,16 @@
 <?php
     session_start();
     require "conexao.php";
-
+    
+    //Se o formulário foi submitado, então entramos nesse IF
     if(isset($_POST['email']) && empty($_POST['email']) == false)
     {
           
         try
         {
+            //Essas duas variáveis abaixo são preenchidas quando os formulário é submitado (os dados vem do form)
+            //O addslashes é uma forma de segurança para o caso de um usuário tentar usar algum código malicioso
+            //Mas no caso abaixo é opcional o addslasher
             $email = addslashes($_POST['email']);
             $senha = addslashes($_POST['senha']);
 
@@ -23,14 +27,14 @@
             {
                 $dado = $sql->fetch();
                 $_SESSION['id'] = $dado['id'];
-                
+                //Se der certo, se o usuário foi encontrado, ele é direcionado para o index.php (Levando o $_SESSION['id'] configurado)
                 header("Location: index.php");
             }
             else
             {
+                //Se o usuário não for encontrado, ele é direcionado para a página de falha
                 header("Location: falha.php");
             }
-
 
         }
         catch(PDOException $e)
